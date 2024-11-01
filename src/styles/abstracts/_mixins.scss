@@ -1,0 +1,25 @@
+@use 'sass:map';
+@use './breakpoints' as *;
+
+@mixin breakpoint($size) {
+  @if map.has-key($breakpoints, $size) {
+    @media (min-width: map.get($breakpoints, $size)) {
+      @content;
+    }
+  } @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$size}`. "
+          + "Available breakpoints are: #{map.keys($breakpoints)}.";
+  }
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

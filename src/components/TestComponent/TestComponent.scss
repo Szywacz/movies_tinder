@@ -1,0 +1,10 @@
+.test-title {
+  color: $primary-color;
+
+  @include breakpoint('sm') {
+    color: red;
+  }
+  @include breakpoint('md') {
+    color: green;
+  }
+}
