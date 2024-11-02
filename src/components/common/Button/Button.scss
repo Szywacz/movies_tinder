@@ -1,0 +1,90 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  outline: none;
+  border: none;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &__content {
+    display: inline-flex;
+    align-items: center;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  // Variants
+  &--primary {
+    background-color: $primary-color;
+    color: $light-color;
+
+    &:hover:not(:disabled) {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+
+  &--secondary {
+    background-color: $secondary-color;
+    color: $light-color;
+
+    &:hover:not(:disabled) {
+      background-color: darken($secondary-color, 10%);
+    }
+  }
+
+  &--outline {
+    background-color: transparent;
+    border: 1px solid $dark-color;
+    color: $light-color;
+
+    &:hover:not(:disabled) {
+      background-color: rgba($dark-color, 0.2);
+    }
+  }
+
+  &--success {
+    background-color: $success-color;
+    color: $light-color;
+
+    &:hover:not(:disabled) {
+      background-color: darken($success-color, 10%);
+    }
+  }
+
+  &--danger {
+    background-color: $danger-color;
+    color: $light-color;
+
+    &:hover:not(:disabled) {
+      background-color: darken($danger-color, 10%);
+    }
+  }
+
+  // Sizes
+  &--sm {
+    height: 32px;
+    padding: 0 12px;
+    font-size: 14px;
+  }
+
+  &--md {
+    height: 40px;
+    padding: 0 16px;
+    font-size: 16px;
+  }
+
+  &--lg {
+    height: 48px;
+    padding: 0 24px;
+    font-size: 18px;
+  }
+}

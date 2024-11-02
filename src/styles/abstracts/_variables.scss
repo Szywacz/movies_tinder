@@ -7,6 +7,8 @@ $warning-color: #ffc107;
 $info-color: #17a2b8;
 $light-color: #f8f9fa;
 $dark-color: #343a40;
+$darker-color: #1e1e1e;
+$gray-color: #ccc;
 
 // Typography
 $font-family-base:
@@ -16,11 +18,3 @@ $font-family-base:
   sans-serif;
 $font-size-base: 1rem;
 $line-height-base: 1.5;
-
-// Spacing
-$spacing-unit: 0.25rem;
-$spacing-xs: $spacing-unit;
-$spacing-sm: $spacing-unit * 2;
-$spacing-md: $spacing-unit * 4;
-$spacing-lg: $spacing-unit * 6;
-$spacing-xl: $spacing-unit * 8;

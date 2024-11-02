@@ -1,10 +1,11 @@
-import TestComponent from './components/TestComponent/TestComponent';
+import './App.scss';
+import MoviesSwipper from './features/MoviesSwipper/MoviesSwipper';
 
 function App() {
   return (
-    <>
-      <TestComponent />
-    </>
+    <div className='app-container'>
+      <MoviesSwipper />
+    </div>
   );
 }
 
