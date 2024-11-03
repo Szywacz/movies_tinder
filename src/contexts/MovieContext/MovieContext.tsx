@@ -34,12 +34,13 @@ export const MovieProvider = ({ children }: PropsWithChildren) => {
         loading: false,
       }));
     } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to fetch movies.';
       setState((prev) => ({
         ...prev,
-        error: 'Failed to fetch movies.',
+        error: errorMessage,
         loading: false,
       }));
-      throw error;
     }
   };
 
@@ -58,11 +59,14 @@ export const MovieProvider = ({ children }: PropsWithChildren) => {
         };
       });
     } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : 'Failed to update recommendation.';
       setState((prev) => ({
         ...prev,
-        error: 'Failed to update recommendation.',
+        error: errorMessage,
       }));
-      throw error;
     }
   };
 
