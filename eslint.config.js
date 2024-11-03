@@ -34,6 +34,14 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
+      '@typescript-eslint/no-misused-promises': [
+        2,
+        {
+          checksVoidReturn: {
+            attributes: false,
+          },
+        },
+      ],
     },
     settings: { react: { version: '18.3' } },
   }
