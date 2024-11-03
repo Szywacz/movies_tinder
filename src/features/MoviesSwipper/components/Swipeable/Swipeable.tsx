@@ -2,7 +2,7 @@ import { PropsWithChildren, TouchEvent, useRef, useState } from 'react';
 import './Swipeable.scss';
 
 type SwipeableProps = {
-  onSwipe?: () => void;
+  onSwipe?: (decision: 'reject' | 'accept') => void;
 };
 
 const Swipeable = ({
@@ -19,7 +19,6 @@ const Swipeable = ({
   const minSwipeDistance = 100;
 
   const onTouchStart = (e: TouchEvent<HTMLDivElement>): void => {
-
     setTouchEnd(null);
     setTouchStart(e.targetTouches[0].clientX);
     setIsDragging(true);
@@ -34,7 +33,7 @@ const Swipeable = ({
 
     if (Math.abs(distance) < minSwipeDistance) return;
     if (distance != 0) {
-      onSwipe?.();
+      onSwipe?.('reject');
     }
   };
 
@@ -49,9 +48,9 @@ const Swipeable = ({
   };
 
   return (
-    <div className='swipeable__container'>
+    <div className={`swipeable__container`}>
       <div
-        className='swipeable__content'
+        className={`swipeable__content`}
         ref={elementRef}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}

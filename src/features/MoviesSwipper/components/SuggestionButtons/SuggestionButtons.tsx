@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import Button, {
   ButtonProps,
 } from '../../../../components/common/Button/Button';
+import { useMovies } from '../../../../contexts/MovieContext/MovieContext';
 import './SuggestionButtons.scss';
 
 interface SuggestionButtonConfig
@@ -9,32 +11,33 @@ interface SuggestionButtonConfig
   onClick: () => void;
 }
 
-const stopPropagation = (e: React.PointerEvent | React.TouchEvent) => {
-  e.stopPropagation();
-};
-
-const buttons: SuggestionButtonConfig[] = [
-  {
-    title: 'Accept',
-    size: 'lg',
-    variant: 'success',
-    className: '',
-    onClick: () => {
-      console.log('accepted');
-    },
-  },
-  {
-    title: 'Reject',
-    size: 'lg',
-    variant: 'danger',
-    className: '',
-    onClick: () => {
-      console.log('rejected');
-    },
-  },
-];
-
 const SuggestionButtons = () => {
+  const { handleRecommendationUpdate } = useMovies();
+
+  const stopPropagation = (e: React.PointerEvent | React.TouchEvent) => {
+    e.stopPropagation();
+  };
+
+  const buttons: SuggestionButtonConfig[] = [
+    {
+      title: 'Accept',
+      size: 'lg',
+      variant: 'success',
+      className: '',
+      onClick: () => {
+        handleRecommendationUpdate('accept');
+      },
+    },
+    {
+      title: 'Reject',
+      size: 'lg',
+      variant: 'danger',
+      className: '',
+      onClick: () => {
+        handleRecommendationUpdate('reject');
+      },
+    },
+  ];
   return (
     <div className='suggestion-buttons__container'>
       {buttons.map((_, index) => (
