@@ -1,63 +1,82 @@
-import { PropsWithChildren, TouchEvent, useRef, useState } from 'react';
+import { PropsWithChildren, useState } from 'react';
 import './Swipeable.scss';
 
 type SwipeableProps = {
   onSwipe?: (decision: 'reject' | 'accept') => void;
 };
 
+interface SwipeState {
+  startX: number;
+  currentX: number;
+  isDragging: boolean;
+}
+
 const Swipeable = ({
   onSwipe,
   children,
 }: PropsWithChildren<SwipeableProps>) => {
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
-  const [isDragging, setIsDragging] = useState<boolean>(false);
-  const [translateX, setTranslateX] = useState<number>(0);
+  const [swipeState, setSwipeState] = useState<SwipeState>({
+    startX: 0,
+    currentX: 0,
+    isDragging: false,
+  });
 
-  const elementRef = useRef<HTMLDivElement>(null);
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    const element = e.currentTarget;
+    element.setPointerCapture(e.pointerId);
 
-  const minSwipeDistance = 100;
-
-  const onTouchStart = (e: TouchEvent<HTMLDivElement>): void => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
-    setIsDragging(true);
+    setSwipeState({
+      startX: e.clientX,
+      currentX: e.clientX,
+      isDragging: true,
+    });
   };
 
-  const onTouchEnd = (): void => {
-    if (!touchStart || !touchEnd) return;
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!swipeState.isDragging) return;
 
-    setIsDragging(false);
-    const distance = touchEnd - touchStart;
-    setTranslateX(0);
+    setSwipeState((prev) => ({
+      ...prev,
+      currentX: e.clientX,
+    }));
+  };
 
-    if (Math.abs(distance) < minSwipeDistance) return;
-    if (distance != 0) {
+  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!swipeState.isDragging) return;
+
+    const element = e.currentTarget;
+    element.releasePointerCapture(e.pointerId);
+
+    const swipeDistance = swipeState.currentX - swipeState.startX;
+    const minSwipeDistance = 100;
+
+    if (Math.abs(swipeDistance) >= minSwipeDistance) {
       onSwipe?.('reject');
     }
+
+    setSwipeState((prev) => ({
+      ...prev,
+      isDragging: false,
+      currentX: prev.startX,
+    }));
   };
 
-  const onTouchMove = (e: TouchEvent<HTMLDivElement>): void => {
-    if (!isDragging) return;
-
-    const currentTouch = e.targetTouches[0].clientX;
-    setTouchEnd(currentTouch);
-
-    const distance = currentTouch - touchStart!;
-    setTranslateX(distance);
-  };
+  const translateX = swipeState.isDragging
+    ? swipeState.currentX - swipeState.startX
+    : 0;
 
   return (
     <div className={`swipeable__container`}>
       <div
         className={`swipeable__content`}
-        ref={elementRef}
-        onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
-        onTouchMove={onTouchMove}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
         style={{
           transform: `translateX(${translateX}px)`,
-          transition: isDragging ? 'none' : 'transform 0.3s ease-out',
+          transition: swipeState.isDragging
+            ? 'none'
+            : 'transform 0.3s ease-out',
         }}>
         {children}
       </div>
